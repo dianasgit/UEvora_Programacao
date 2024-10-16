@@ -11,11 +11,114 @@ Sumário
 -Instruções
 -Comentários
 
+Modelo de von Neumann
+-Modelo dos computadores
+Meados do século XX
+Baseada no conceito de "programa armazenado"
+
+Componentes
+Unidade central de processamento (CPU, central
+processing unit)
+Unidade de memória
+Dispositivos de armazenamento
+Dispositivos de entrada e de saída
 
 
+CPU – central processing unit
+O que é?
+Circuito eletrónico responsável pela
+execução das instruções de um programa
+Também conhecido como Microprocessador, processador
+Contém diversos elementos
+Unidade de controlo
+Unidade de aritmética e lógica (ALU)
+Registos
+
+Elementos da CPU
+Unidade de Aritmética e Lógica
+Permite a execução de operações: Aritméticas (soma, subtração, etc…); Lógicas (and, or, not, etc)
+Unidade de controlo: Controla a operação da ALU, memória e dispositivos de entrada/saída. Fornece sinais de sincronização e de controlo necessários para os outros
+componentes
+Registos
+Áreas de armazenamento locais de alta velocidade
+
+UNIDADE DE MEMÓRIA
+Memória principal ou primária (RAM)
+Memória rápida e diretamente acessível pelo CPU
+Está dividida em "fatias" (palavras) com
+● tamanho fixo
+    ○ 8 bits (valores de 0 a 255) ~ BYTE
+    ○ 4 ou 8 bytes ~ palavra ("word")
+● endereço
+    ○ todos têm endereço de BYTE. (quer seja byte, palavra ou outro)
+
+############   LINGUAGEM C    ##############
+----Informação
+Criada em 1972
+nos AT&T Bell Labs
+por Dennis Ritchie
+para o desenvolvimento do SO Unix 
+----Versões
+1973: K&R (ver livro)
+1989: ANSI C (comissão de normalização)
+Atualmente: C18 standard revision (junho 2018)
 
 
+VALOR: tipos int, float, char
 
+VARIÁVEL: Designa um local na memória. Permite armazenar um valor. 
+Referenciado por um nome (identifica uma posição de memória); tipo int, float, char.
+NOME DA VARIÁVEL: *Qualquer comprimento e Qualquer identificador válido, exceto Palavras reservadas ou Dígito numerico no início. É Case sensitive, e Deve
+ser sugestivo e corente.
+
+antes de utilizar a VAR é preciso declarar -> indicar tipo e nome;
+
+
+Afetação
+Instrução que associa um valor (direita) à variável (esquerda). variavel = expressão;
+
+Operador
+Símbolo que representa uma operação; ARITTIMÉTICOS: + - / * %. Precedẽncia: 1º (),*/,+-
+
+Operando
+Valor/variável à qual se aplicam os operadores;
+
+Expressão
+Combinação de valores, variáveis e operadores;
+
+OPERADORES RELACIONAIS:
+== , != , < , > , <= , >= 
+
+OPERADORES LÓGICOS:
+&& , || , !
+Precedência, 1º: ! , && , ||
+
+
+TIPOS NOMÉRICOS, a mistura de tipos resulta no maior
+double
+float
+long
+int
+short
+char
+
+
+Instrução
+Uma unidade de código que é executada, terminam com ;
+Exemplos
+a = 3;
+y = x*a;
+
+Programa: sequência de instruções
+A execução do programa começa pela 1ª instrução e continua com a
+2ª, etc
+
+COMENTÁRIO: anotações de linguagem natura, usar o menos possível. 
+// uma linha
+/*  mais linhas  */  
+
+
+PAROU SLLIDE PG 29 AULA TEORICA 3
 
 
 
