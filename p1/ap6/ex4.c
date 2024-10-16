@@ -1,23 +1,36 @@
-/* Escreva um programa que leia um número e, caso ele seja diferente de 0 calcule e mostre:
-- O quadrado do número informado;
-- A raiz quadrada do número informado*/
-
-// ***** PARA FAZER A COMPILAÇÃO JUNTO COM O MATH.H  USE $ gcc -o ex4 ex4.c -lm   ** atenção ao -lm no final
+/*Uma empresa tem um sistema de bónus para os seus funcionários com base no
+número de anos que eles trabalharam. A regra é a seguinte: 
+Até 5 anos: sem bónus;
+De 6 a 10 anos: bónus de 5% do salário;
+Mais de 10 anos: bónus de 10% do salário.
+Implemente um programa que leia o número de anos de serviço de um funcionário e o seu salário, e calcule o valor do bónus. ----a. Entrada: Dois números inteiros: o número de anos de serviço e o salário do funcionário. ----- b. Saída: O valor do bónus a ser pago.*/
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
-int main (int argc , char *argv[]){
+int main (int argc, char *argv[]){
 
-    float num;
-    printf ("Digite um número:");
-    scanf ("%f", &num);
+    int anos, salario;
+    float bonus;
 
-    if (num == 0){
-        printf ("O número digitado é %f.\n", num);
-    }else{
-        printf ("O número digitado é %.2f\n. O quadrado deste número é %.1f e a raiz é %.2f.\n\n", num , num*num, sqrt(num) );
+    printf("Digite o número de anos de serviço");
+    scanf("%d", &anos);
+
+    printf("Digite o salário atual");
+    scanf("%d", &salario);
+
+    if (anos <6){
+        bonus = salario * 0;
+        printf("O valor do bónus é: %.2f", bonus);
+
+    }else if (anos>=6 && anos<=10){
+        bonus = salario * 0.05;
+        printf ("O valor do bónus é: %.2f", bonus);
+
+    }else if (anos>10){
+        bonus = salario * 0.1;
+        printf ("O valor do bónus é: %.2f", bonus);
     }
+
     return 0;
 }

@@ -1,20 +1,19 @@
+/*1. Imagine que você está a criar um sistema de verificação para um supermercado. Algumas promoções só são aplicáveis a produtos cujo código é múltiplo de 5 e de 11, simultaneamente. Implemente um programa que, dado o código de um produto, verifique se ele é elegível para essa promoção. ---a. Entrada: Um número inteiro representando o código do produto. ---b. Saída: "O produto está em promoção" ou "O produto não está em promoção" */
+
 #include <stdio.h>
 #include <stdlib.h>
 
-int main (int argc, char *argv[]) {
+int main (int argc, char *argv[]){
 
-//Escreva um programa para ler um número inteiro e verifique se esse número é par ou ímpar. Após verificar, o programa deve escrever no ecrã o resultado da verificação
+    int codigo, promo;
+    printf("\nDigite o código do produto.\n");
+    scanf ("%d", &codigo);
 
-int num;
+    if (codigo%5==0 && codigo%11==0){
+        printf ("\nO produto está em promoção");
+    }else{
+        printf ("\nO produto não está em promoção. \n");
+    }
 
-printf ("\nDigite um número inteiro.\n");
-scanf ("%d", &num);
-
-if (num%2 == 0){
-    printf ("\nO número %d é PAR.", num);
-} else {
-    printf ("\nO número %d é ÍMPAR.", num);
-}
-
-return 0;
+    return 0;
 }
