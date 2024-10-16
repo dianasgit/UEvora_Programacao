@@ -10,4 +10,4 @@ Aplicações */
 
 
 
-***aula parica 6 = ap6. dia 16.10.2024 = continuação de condicionais.
+***aula prática 6 = ap6. dia 16.10.2024 = continuação de condicionais.
