@@ -5,19 +5,19 @@
 
 int main (int arg, char *argv[]){
 
-    int num1, num2;
+    int num1, num2, x;
 
     printf("Escreva dois numeros");
-    scanf("%d, %d", &num1, &num2);
+    scanf("%d %d", &num1, &num2);
 
-    if (num2>num1){
-        while( ){
-            
-        }
-
+    if (num1 > num2){
+        x = num2;
+        num2 = num1;
+        num1 = x;
     }
-
-
+        while(num2>num1){
+            printf("%d\n", num1);
+            num1 = num1+1;
+        }
     return 0;
-
 }
