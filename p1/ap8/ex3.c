@@ -15,8 +15,8 @@ int main (int argc, char* argv[]){
 
     int num;
 
-    srand(time(NULL));
-    int sorteio = rand()%101;
+    srand(time(0));
+    int sorteio = rand()%100 + 1;
 
     scanf("%d", &num);
 
@@ -28,8 +28,6 @@ int main (int argc, char* argv[]){
         }
         scanf("%d", &num);
     }
-
     printf("Você acertou! ");
-
     return 0;
 }
