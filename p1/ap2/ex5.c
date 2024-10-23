@@ -8,7 +8,7 @@ int main (int argc , char *argv[]){
 
     float produto = (x*(y*y));
 
-    printf ("\nO produto entre o quadrado %.1f e o número  %d = %.1f \n\n", y, x, produto);
+    printf ("\nO produto entre o quadrado %.1f e o número  %d = %.2f \n\n", y, x, produto);
     
     return 0;
-}
+} 
