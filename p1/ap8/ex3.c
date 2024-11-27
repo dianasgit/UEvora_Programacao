@@ -1,7 +1,4 @@
-/*Implemente um jogo simples de adivinhas. O programa deve gerar um número aleatório
-entre 1 e 100, e o utilizador deve tentar adivinhar o número. A cada tentativa, o programa deve
-dizer se o número inserido é maior ou menor do que o número correto. O ciclo termina
-quando o utilizador acerta o número.
+/*Implemente um jogo simples de adivinhas. O programa deve gerar um número aleatório entre 1 e 100, e o utilizador deve tentar adivinhar o número. A cada tentativa, o programa deve dizer se o número inserido é maior ou menor do que o número correto. O ciclo termina quando o utilizador acerta o número.
 Regras:
 ● Utilize um ciclo while que continua até que o utilizador adivinhe o número
 corretamente.
