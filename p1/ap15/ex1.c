@@ -4,7 +4,7 @@ Output esperado:
 Ficheiro 'base_dados_alunos.txt' criado com sucesso.*/
 
 
-#include <stdio.h>
+#include <stdio.h> 
 #include <stdlib.h>
 
 int main() {
@@ -13,7 +13,7 @@ int main() {
     FILE *ficheiro = fopen(nome_ficheiro, "r");
 
     if (ficheiro == NULL) {
-        ficheiro = fopen(nome_ficheiro, "r");
+        ficheiro = fopen(nome_ficheiro, "w");
         printf("Ficheiro '%s' criado com sucesso.\n", nome_ficheiro);
     } else {
         printf("O ficheiro '%s' já existe.\n", nome_ficheiro);
