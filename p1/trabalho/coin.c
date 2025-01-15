@@ -146,9 +146,9 @@ void startGameHvM(){
 	
 	do{
 		memset(play, 0, sizeof(play));
-		printCoins(g.numColunas, g.coins);
 		
 		if (g.current_player == 2){
+			printCoins(g.numColunas, g.coins);
 			jogadaMaquinaValida(play, g.numColunas, g.coins);
 			printf("\nA máquina escolheu a fila %d e retirou %d moedas.\n", play[0], play[1]);
 
@@ -164,6 +164,7 @@ void startGameHvM(){
 		}	
 
 		if (g.current_player == 1){
+			printCoins(g.numColunas, g.coins);
 			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
 			memset(play, 0, sizeof(play));						
 			jogadaHumanoValida(play, g.numColunas, g.coins);
