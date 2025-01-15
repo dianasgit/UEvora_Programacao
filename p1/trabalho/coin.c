@@ -79,14 +79,14 @@ int menuNovoJogo(){
 			menuInicial();
             break;
 		}else if (g.game_mode == 2){
-            printf("Modo de jogo Humano X Maquina.");
+            printf("Modo de jogo Humano X Maquina.\n");
             return g.game_mode = 2;
             break;
         }else if (g.game_mode == 1){
-            printf("Modo de jogo Humano X Humano.");
+            printf("Modo de jogo Humano X Humano.\n");
             break;
         }else {
-			printf("Número não encontrado no menu!");
+			printf("Número não encontrado no menu!\n");
 		}
 	} while (1);
 }
@@ -130,10 +130,12 @@ void startGameHvH(){
 		} else {
 			g.current_player = 1;
 		}
-
+		
 		if (checkEnd(g.numColunas, g.coins) == 1) {
 			vitoria();
+			break;
 		}
+
 	} while(1);
 }
 
@@ -149,21 +151,28 @@ void startGameHvM(){
 		if (g.current_player == 2){
 			jogadaMaquinaValida(play, g.numColunas, g.coins);
 			printf("\nA máquina escolheu a fila %d e retirou %d moedas.\n", play[0], play[1]);
-				if (checkEnd(g.numColunas, g.coins) == 1) {
-					vitoria();
-					break;
-				}
-			g.current_player = 1;
 
-		} else if (g.current_player == 1){
-			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
-			jogadaHumanoValida(play, g.numColunas, g.coins);						
-			g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
-				if (checkEnd(g.numColunas, g.coins) == 1) {
-					vitoria();
-					break;
+			g.current_player = 1;
+			if (checkEnd(g.numColunas, g.coins) == 1) {
+				printf("Maquina venceu!\n");
+				if (g.is_saved == 1) {
+				remove("Cgame.txt");
+				menuInicial();			
+				break;
 				}
+			}
+		}	
+
+		if (g.current_player == 1){
+			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
+			memset(play, 0, sizeof(play));						
+			jogadaHumanoValida(play, g.numColunas, g.coins);
+			g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
 			g.current_player = 2;
+			if (checkEnd(g.numColunas, g.coins) == 1) {
+				vitoria();
+				break;
+			}
 		}
 	}while (1);
 }
@@ -259,17 +268,18 @@ int checkEnd(int numColunas, int *coins) {
 void vitoria(){
 	printf("Jogador %d venceu!\n", g.current_player);
 	if (g.is_saved == 1) {
-		remove("Cgame.txt");
+		remove("Cgame.txt");  
+		menuInicial();
+		return;
 	}
 }
-
 
 void saveGame(){
     FILE *ofile = fopen("Cgame.txt", "w");
 
 	if (ofile == NULL) {
 		printf("Erro :Não foi possível escrever o arquivo que salva o jogo.\n");
-		menuInicial();  //////////// 
+		menuInicial();  
 	}
 
 	fprintf(ofile, "%d\n", g.game_mode);
@@ -312,10 +322,6 @@ void loadOldgame(){
 
 	for (int i = 0; i < g.numColunas; i++) {
 		fscanf(ifile, "%d", &g.coins[i]);
-
-		/* if (i != g.numColunas - 1) {
-			fscanf(ifile, " ");  // pula os espaços
-		} */
 	}
 
 	g.is_saved = 1;
@@ -342,7 +348,6 @@ int main() {
         	configCoins();
         	startGameHvH();
     	}
-
 	} while(1);
 
 	return 0;
