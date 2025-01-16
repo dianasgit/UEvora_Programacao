@@ -152,11 +152,7 @@ void startGameHvM(){
 
 			g.current_player = 1;
 			if (checkEnd(g.numColunas, g.coins) == 1) {
-				printf("Maquina venceu!\n");
-				if (g.is_saved == 1) {
-				remove("Cgame.txt");
-				menuInicial();			
-				break;
+				vitoria();
 				}
 			}
 		}	
@@ -221,7 +217,7 @@ void jogadaMaquinaValida(int* jogada, int numColunas, int *coins) {
 	while(!check) {
         
 		coluna = rand() % numColunas;
-		if (coluna > 0) {
+		if (coins[coluna] > 0) {
 			value = rand() % (coins[coluna] + 1);
 			if (value > 0) {
 				lines_with_value = 0;
@@ -267,12 +263,17 @@ int checkEnd(int numColunas, int *coins) {
 }
 
 void vitoria(){
-	printf("Jogador %d venceu!\n", g.current_player);
+	if (g.current_player == 1) {
+		printf("Jogador %d venceu!\n", g.current_player);
+	} else if { (g.game_mode == 2 && g.current_player == 2) {
+  		printf("Maquina venceu!\n"); 
+	} else {
+	printf("Jogador %d venceu!\n", g.current_player); 
+	}  			
 	if (g.is_saved == 1) {
 		remove("Cgame.txt");  
-		menuInicial();
-		return;
 	}
+	menuInicial();
 }
 
 void saveGame(){
