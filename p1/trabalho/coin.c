@@ -119,8 +119,12 @@ void startGameHvH(){
 		printf("Jogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);	
 	    	memset(play, 0, sizeof(play));
 		jogadaHumanoValida(play, g.numColunas, g.coins);						
-		g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
-	    
+		if (play[0] == 0 && play[1] == 0) {
+			saveGame(); 
+			break;
+		}   
+	    	g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
+
 		if (g.current_player == 1) {
 			g.current_player = 2;
 		} else {
@@ -160,6 +164,11 @@ void startGameHvM(){
 			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
 			memset(play, 0, sizeof(play));						
 			jogadaHumanoValida(play, g.numColunas, g.coins);
+
+			if (play[0] == 0 && play[1] == 0) {
+			saveGame(); 
+			break;
+			}
 			
 			g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
 			g.current_player = 2;
@@ -178,28 +187,29 @@ int* jogadaHumanoValida(int *jogada, int numColunas, int *coins) {
 	int num2;
 
     do{
-		char input[50] = "";
-	    fgets(input, sizeof(input), stdin);
+	char input[50] = "";
+	fgets(input, sizeof(input), stdin);
         input[strcspn(input, "\n")] = '\0';
 
         if (sscanf(input, "%d %d", &num1, &num2) == 2 && num1 >= 0 && num2 >= 0) {
-            if (num1 == 0 && num2 == 0) {
-                saveGame(); 
+        	if (num1 == 0 && num2 == 0) {
+		jogada[0] = 0;
+		jogada[1] = 0;
                 break;
-			} else if (num1 <= g.numColunas && num2 != 0) {
-				if (num2 <= coins[num1-1] && coins[num1-1] != 0) {
-					jogada[0] = num1;
-					jogada[1] = num2;
-					return jogada;
-				} else {
-					printf("Digite valores possíveis para este jogo!\n");
-				}
+		} else if (num1 <= g.numColunas && num2 != 0) {
+			if (num2 <= coins[num1-1] && coins[num1-1] != 0) {
+				jogada[0] = num1;
+				jogada[1] = num2;
+				return jogada;
 			} else {
 				printf("Digite valores possíveis para este jogo!\n");
 			}
 		} else {
-			printf("Faça uma jogada válida\n");
+			printf("Digite valores possíveis para este jogo!\n");
 		}
+	} else {
+		printf("Faça uma jogada válida\n");
+	}
     }while(1);
 }
 
