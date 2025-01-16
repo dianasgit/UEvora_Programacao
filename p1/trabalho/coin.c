@@ -114,15 +114,13 @@ void startGameHvH(){
 	int play[2];
 	g.current_player = chooseStartingPlayer();
 
-    do{
+    do {
 		printCoins(g.numColunas, g.coins);  
-		printf("Jogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
-		
-	    memset(play, 0, sizeof(play));
+		printf("Jogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);	
+	    	memset(play, 0, sizeof(play));
 		jogadaHumanoValida(play, g.numColunas, g.coins);						
-
 		g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
-
+	    
 		if (g.current_player == 1) {
 			g.current_player = 2;
 		} else {
@@ -131,7 +129,6 @@ void startGameHvH(){
 		
 		if (checkEnd(g.numColunas, g.coins) == 1) {
 			vitoria();
-			break;
 		}
 
 	} while(1);
@@ -265,7 +262,7 @@ int checkEnd(int numColunas, int *coins) {
 void vitoria(){
 	if (g.current_player == 1) {
 		printf("Jogador %d venceu!\n", g.current_player);
-	} else if { (g.game_mode == 2 && g.current_player == 2) {
+	} else if (g.game_mode == 2 && g.current_player == 2) {
   		printf("Maquina venceu!\n"); 
 	} else {
 	printf("Jogador %d venceu!\n", g.current_player); 
