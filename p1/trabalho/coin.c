@@ -294,7 +294,7 @@ void saveGame(){
 	fprintf(ponteiro, "\n");
 	fclose(ponteiro);
 	printf("O jogo foi guardado.\n");
-	menuInicial();
+	return;
 }
 
 void loadOldgame(){
