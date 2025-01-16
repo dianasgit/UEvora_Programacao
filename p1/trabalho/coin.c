@@ -339,7 +339,6 @@ void loadOldgame(){
 
 
 int main() {
-	//const char *savefile = "Cgame.txt";
 
 	do {
     	menuInicial();
