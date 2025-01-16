@@ -20,9 +20,7 @@ struct Game {
 	int numColunas;
 	int *coins;
 	int is_saved;
-};
-struct Game g;
-
+} g;
 
 int get_natural_number() {
 	int number;
@@ -168,8 +166,10 @@ void startGameHvM(){
 			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
 			memset(play, 0, sizeof(play));						
 			jogadaHumanoValida(play, g.numColunas, g.coins);
+			
 			g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
 			g.current_player = 2;
+			
 			if (checkEnd(g.numColunas, g.coins) == 1) {
 				vitoria();
 				break;
@@ -276,57 +276,57 @@ void vitoria(){
 }
 
 void saveGame(){
-    FILE *ofile = fopen("Cgame.txt", "w");
+    FILE *ponteiro = fopen("Cgame.txt", "w");
 
-	if (ofile == NULL) {
+	if (ponteiro == NULL) {
 		printf("Erro :Não foi possível escrever o arquivo que salva o jogo.\n");
 		menuInicial();  
 	}
 
-	fprintf(ofile, "%d\n", g.game_mode);
-	fprintf(ofile, "%d\n", g.current_player);
-	fprintf(ofile, "%d\n", g.numColunas);
+	fprintf(ponteiro, "%d\n", g.game_mode);
+	fprintf(ponteiro, "%d\n", g.current_player);
+	fprintf(ponteiro, "%d\n", g.numColunas);
 	for (int i = 0; i < g.numColunas; i++) {
-		fprintf(ofile, "%d", g.coins[i]);
+		fprintf(ponteiro, "%d", g.coins[i]);
 		if (i != g.numColunas - 1) {
-			fprintf(ofile, " ");
+			fprintf(ponteiro, " ");
 		}
 	}
-	fprintf(ofile, "\n");
-	fclose(ofile);
+	fprintf(ponteiro, "\n");
+	fclose(ponteiro);
 	printf("O jogo foi guardado.\n");
 	menuInicial();
 }
 
 void loadOldgame(){
-	FILE *ifile = fopen("Cgame.txt", "r");
+	FILE *ponteiro = fopen("Cgame.txt", "r");
 
-	if (ifile == NULL) {
+	if (ponteiro == NULL) {
         printf("Erro: Não há jogo salvo ou o arquivo não pôde ser aberto.\n");
         menuInicial();
     }
 
-	fseek(ifile, 0, SEEK_END);
-	long filesize = ftell(ifile); 	// verifica se o arquivo está vazio
+	fseek(ponteiro, 0, SEEK_END);
+	long filesize = ftell(ponteiro);  //ftell retorna posição atual 
 	if (filesize == 0) { 
 		printf("Erro: Não há jogo salvo.\n");
 		menuInicial();
 	}
 	
-	fseek(ifile, 0, SEEK_SET);  // volta ao inicio do arquivo
+	fseek(ponteiro, 0, SEEK_SET); 
 
-	fscanf(ifile, "%d\n", &g.game_mode);
-	fscanf(ifile, "%d\n", &g.current_player);
-	fscanf(ifile, "%d\n", &g.numColunas);
+	fscanf(ponteiro, "%d\n", &g.game_mode);
+	fscanf(ponteiro, "%d\n", &g.current_player);
+	fscanf(ponteiro, "%d\n", &g.numColunas);
 
 	g.coins = malloc(g.numColunas * sizeof(int));  
 
 	for (int i = 0; i < g.numColunas; i++) {
-		fscanf(ifile, "%d", &g.coins[i]);
+		fscanf(ponteiro, "%d", &g.coins[i]);
 	}
 
 	g.is_saved = 1;
-	fclose(ifile);
+	fclose(ponteiro);
 
 	if (g.game_mode == 1) {
 		startGameHvH();
@@ -337,7 +337,7 @@ void loadOldgame(){
 
 
 int main() {
-	const char *savefile = "Cgame.txt";
+	//const char *savefile = "Cgame.txt";
 
 	do {
     	menuInicial();
