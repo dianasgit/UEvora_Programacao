@@ -1,9 +1,10 @@
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
 
-int menuNovoJogo();
+void menuNovoJogo();
 void loadOldgame();
 void vitoria();
 void saveGame();
@@ -64,25 +65,24 @@ void menuInicial(){
 	} while(1);
 }
 
-int menuNovoJogo(){
+void menuNovoJogo(){
 	do { 
 		printf("Insira o modo de Jogo \n");
 		printf("         1 - Humano x Humano\n"); 
 		printf("         2 - Humano x Máquina\n");
 		printf("         3 - Voltar ao Menu anterior\n");
         
+		g.is_saved = 0;
 		g.game_mode = get_natural_number();
 
 		if (g.game_mode == 3) {
-			menuInicial();
-            break;
+			return;
 		}else if (g.game_mode == 2){
             printf("Modo de jogo Humano X Maquina.\n");
-            return g.game_mode = 2;
-            break;
+            return;
         }else if (g.game_mode == 1){
             printf("Modo de jogo Humano X Humano.\n");
-            break;
+            return;
         }else {
 			printf("Número não encontrado no menu!\n");
 		}
@@ -112,7 +112,6 @@ void printCoins() {
 void startGameHvH(){
     printf("Jogo Iniciou! \nPara guardar o jogo, no estado atual, inserir 0 0.\n");
 	int play[2];
-	g.current_player = chooseStartingPlayer();
 
     do {
 		printCoins(g.numColunas, g.coins);  
@@ -142,7 +141,6 @@ void startGameHvH(){
 void startGameHvM(){
 	printf("Jogo Iniciou! \nPara guardar o jogo, no estado atual, inserir 0 0.");
 	int play[2];
-	g.current_player = chooseStartingPlayer();
 	
 	do{
 		memset(play, 0, sizeof(play));
@@ -336,12 +334,7 @@ void loadOldgame(){
 
 	g.is_saved = 1;
 	fclose(ponteiro);
-
-	if (g.game_mode == 1) {
-		startGameHvH();
-	} else {
-		startGameHvM();
-	}
+	return;
 }
 
 
@@ -351,11 +344,14 @@ int main() {
 	do {
     	menuInicial();
 
+		if (g.is_saved == 0) {
+			configCoins();
+			g.current_player = chooseStartingPlayer();
+		}
+
 		if (g.game_mode == 2){
-    	    configCoins();
         	startGameHvM();
 		}else if (g.game_mode == 1){
-        	configCoins();
         	startGameHvH();
     	}
 	} while(1);
