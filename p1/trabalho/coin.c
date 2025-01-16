@@ -150,7 +150,6 @@ void startGameHvM(){
 			g.current_player = 1;
 			if (checkEnd(g.numColunas, g.coins) == 1) {
 				vitoria();
-				}
 			}
 		}	
 
