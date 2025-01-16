@@ -129,6 +129,7 @@ void startGameHvH(){
 		
 		if (checkEnd(g.numColunas, g.coins) == 1) {
 			vitoria();
+			break;
 		}
 
 	} while(1);
@@ -150,6 +151,7 @@ void startGameHvM(){
 			g.current_player = 1;
 			if (checkEnd(g.numColunas, g.coins) == 1) {
 				vitoria();
+				break;
 			}
 		}	
 
@@ -269,7 +271,7 @@ void vitoria(){
 	if (g.is_saved == 1) {
 		remove("Cgame.txt");  
 	}
-	menuInicial();
+	return;
 }
 
 void saveGame(){
