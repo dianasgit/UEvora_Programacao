@@ -1,10 +1,9 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
 
-void menuNovoJogo();
+int menuNovoJogo();
 void loadOldgame();
 void vitoria();
 void saveGame();
@@ -65,24 +64,25 @@ void menuInicial(){
 	} while(1);
 }
 
-void menuNovoJogo(){
+int menuNovoJogo(){
 	do { 
 		printf("Insira o modo de Jogo \n");
 		printf("         1 - Humano x Humano\n"); 
 		printf("         2 - Humano x Máquina\n");
 		printf("         3 - Voltar ao Menu anterior\n");
         
-		g.is_saved = 0;
 		g.game_mode = get_natural_number();
 
 		if (g.game_mode == 3) {
-			return;
+			menuInicial();
+            break;
 		}else if (g.game_mode == 2){
             printf("Modo de jogo Humano X Maquina.\n");
-            return;
+            return g.game_mode = 2;
+            break;
         }else if (g.game_mode == 1){
             printf("Modo de jogo Humano X Humano.\n");
-            return;
+            break;
         }else {
 			printf("Número não encontrado no menu!\n");
 		}
@@ -113,16 +113,18 @@ void startGameHvH(){
     printf("Jogo Iniciou! \nPara guardar o jogo, no estado atual, inserir 0 0.\n");
 	int play[2];
 
-    do {
+	if (g.current_player != 1 || g.current_player != 2) {
+		g.current_player = chooseStartingPlayer();
+	}
+
+    do{
 		printCoins(g.numColunas, g.coins);  
-		printf("Jogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);	
-	    	memset(play, 0, sizeof(play));
+		printf("Jogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
+		
+	    memset(play, 0, sizeof(play));
 		jogadaHumanoValida(play, g.numColunas, g.coins);						
-		if (play[0] == 0 && play[1] == 0) {
-			saveGame(); 
-			break;
-		}   
-	    	g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
+
+		g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
 
 		if (g.current_player == 1) {
 			g.current_player = 2;
@@ -141,7 +143,10 @@ void startGameHvH(){
 void startGameHvM(){
 	printf("Jogo Iniciou! \nPara guardar o jogo, no estado atual, inserir 0 0.");
 	int play[2];
-	
+	if (g.current_player != 1 || g.current_player != 2) {
+		g.current_player = chooseStartingPlayer();
+	}
+
 	do{
 		memset(play, 0, sizeof(play));
 		
@@ -151,8 +156,10 @@ void startGameHvM(){
 			printf("\nA máquina escolheu a fila %d e retirou %d moedas.\n", play[0], play[1]);
 
 			g.current_player = 1;
+
 			if (checkEnd(g.numColunas, g.coins) == 1) {
 				vitoria();
+				menuInicial();			
 				break;
 			}
 		}	
@@ -162,17 +169,15 @@ void startGameHvM(){
 			printf("\nJogador %d - Escolha a fila de moedas e o número de moedas para retirar.\n", g.current_player);
 			memset(play, 0, sizeof(play));						
 			jogadaHumanoValida(play, g.numColunas, g.coins);
-
-			if (play[0] == 0 && play[1] == 0) {
-			saveGame(); 
-			break;
-			}
 			
 			g.coins[ play[0]-1 ] = g.coins[ play[0]-1 ] - play[1];
+			
 			g.current_player = 2;
 			
 			if (checkEnd(g.numColunas, g.coins) == 1) {
-				vitoria();
+				printf("Maquina venceu!\n");
+				remove("Cgame.txt");
+				menuInicial();	
 				break;
 			}
 		}
@@ -185,29 +190,28 @@ int* jogadaHumanoValida(int *jogada, int numColunas, int *coins) {
 	int num2;
 
     do{
-	char input[50] = "";
-	fgets(input, sizeof(input), stdin);
+		char input[50] = "";
+	    fgets(input, sizeof(input), stdin);
         input[strcspn(input, "\n")] = '\0';
 
         if (sscanf(input, "%d %d", &num1, &num2) == 2 && num1 >= 0 && num2 >= 0) {
-        	if (num1 == 0 && num2 == 0) {
-		jogada[0] = 0;
-		jogada[1] = 0;
+            if (num1 == 0 && num2 == 0) {
+                saveGame(); 
                 break;
-		} else if (num1 <= g.numColunas && num2 != 0) {
-			if (num2 <= coins[num1-1] && coins[num1-1] != 0) {
-				jogada[0] = num1;
-				jogada[1] = num2;
-				return jogada;
+			} else if (num1 <= g.numColunas && num2 != 0) {
+				if (num2 <= coins[num1-1] && coins[num1-1] != 0) {
+					jogada[0] = num1;
+					jogada[1] = num2;
+					return jogada;
+				} else {
+					printf("Digite valores possíveis para este jogo!\n");
+				}
 			} else {
 				printf("Digite valores possíveis para este jogo!\n");
 			}
 		} else {
-			printf("Digite valores possíveis para este jogo!\n");
+			printf("Faça uma jogada válida\n");
 		}
-	} else {
-		printf("Faça uma jogada válida\n");
-	}
     }while(1);
 }
 
@@ -218,37 +222,40 @@ void jogadaMaquinaValida(int* jogada, int numColunas, int *coins) {
 	int value;
 	int coluna;
 	int lines_with_value = 0;
-	srand(time(NULL));   
-
-	while(!check) {
-        
+	
+	lines_with_value = 0;
+	for (int i = 0; i < numColunas; i++) {
+		if (coins[i] > 0) {
+			lines_with_value = lines_with_value + 1;
+			coluna = i;
+		}
+	}
+       
+	if (lines_with_value == 1) {  // Ganhando
+		if(coins[coluna] > 1){
+			jogada[0] = coluna + 1;
+			jogada[1] = (coins[coluna] - 1) ;
+			coins[coluna] = 1;
+		} else {  // derrota
+			jogada[0] = coluna + 1;
+			jogada[1] = 1;
+			coins[coluna] = 0;
+		}
+		return;
+	}
+	
+	
+	while(1) {
+		srand(time(NULL)); 
 		coluna = rand() % numColunas;
-		if (coins[coluna] > 0) {
-			value = rand() % (coins[coluna] + 1);
-			if (value > 0) {
-				lines_with_value = 0;
-				for (int i = 0; i < numColunas; i++) {
-					if (coins[i] != 0) {
-						lines_with_value = lines_with_value + 1;
-					}
-				}
-
-				if (lines_with_value == 1 && coins[coluna] > 1) {  // Ganhando
-					jogada[0] = coluna + 1;
-					jogada[1] = coins[coluna] - 1;
-					coins[coluna] = 1;
-					check = 1;
-				} else if (lines_with_value == 1 && coins[coluna] == 1) {  // Perdendo
-					jogada[0] = coluna + 1;
-					jogada[1] = 1;
-					coins[coluna] = 0;
-					check = 1;
-				}else if (lines_with_value > 1) {  // Jogada qualquer
-					jogada[0] = coluna + 1;
-					jogada[1] = value;
-					coins[coluna] = coins[coluna] - value;
-					check = 1;
-				}
+		
+		if (coins[coluna] > 0) { 
+			value = (rand() % (coins[coluna]))+ 1;
+			if (value <= coins[coluna]) {
+				jogada[0] = coluna + 1;
+				jogada[1] = value;
+				coins[coluna] = coins[coluna] - value;
+				break;
 			}
 		}
 	}
@@ -269,16 +276,9 @@ int checkEnd(int numColunas, int *coins) {
 }
 
 void vitoria(){
-	if (g.current_player == 1) {
-		printf("Jogador %d venceu!\n", g.current_player);
-	} else if (g.game_mode == 2 && g.current_player == 2) {
-  		printf("Maquina venceu!\n"); 
-	} else {
-	printf("Jogador %d venceu!\n", g.current_player); 
-	}  			
-	if (g.is_saved == 1) {
-		remove("Cgame.txt");  
-	}
+	printf("Jogador %d venceu!\n", g.current_player);
+	remove("Cgame.txt");  
+	menuInicial();
 	return;
 }
 
@@ -302,7 +302,9 @@ void saveGame(){
 	fprintf(ponteiro, "\n");
 	fclose(ponteiro);
 	printf("O jogo foi guardado.\n");
-	return;
+	g.is_saved = 1; 
+
+	menuInicial();
 }
 
 void loadOldgame(){
@@ -334,7 +336,12 @@ void loadOldgame(){
 
 	g.is_saved = 1;
 	fclose(ponteiro);
-	return;
+
+	if (g.game_mode == 1) {
+		startGameHvH();
+	} else {
+		startGameHvM();
+	}
 }
 
 
@@ -343,14 +350,11 @@ int main() {
 	do {
     	menuInicial();
 
-		if (g.is_saved == 0) {
-			configCoins();
-			g.current_player = chooseStartingPlayer();
-		}
-
 		if (g.game_mode == 2){
+    	    configCoins();
         	startGameHvM();
 		}else if (g.game_mode == 1){
+        	configCoins();
         	startGameHvH();
     	}
 	} while(1);
